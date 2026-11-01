@@ -18,7 +18,7 @@ public class MyStack<T>
     {
         // TODO: Part C, demo
         items.Add(item);
-        //throw new NotImplementedException();
+        
     }
 
     // Take the top item off and hand it back.

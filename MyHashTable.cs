@@ -33,7 +33,18 @@ public class MyHashTable<TKey, TValue> where TKey : notnull
     public void Add(TKey key, TValue value)
     {
         // TODO: Part F, demo
-        throw new NotImplementedException();
+        int index = GetBucketIndex(key);
+        foreach (var pair in buckets[index]) 
+        { 
+            if (EqualityComparer<TKey>.Default.Equals(pair.Key, key))
+            {
+                throw new ArgumentException("Key already exists.");
+            }
+        }
+
+        buckets[index].Add(new KeyValuePair<TKey, TValue>(key, value));
+        count++;
+        //throw new NotImplementedException();
     }
 
     // Step 3: search only the key's own bucket. When the key is there, set
@@ -42,7 +53,25 @@ public class MyHashTable<TKey, TValue> where TKey : notnull
     public bool TryGetValue(TKey key, out TValue? value)
     {
         // TODO: Part F, Exercise 6
-        throw new NotImplementedException();
+        int index = GetBucketIndex(key);
+        foreach (var pair in buckets[index])
+        {
+            if (EqualityComparer<TKey>.Default.Equals(pair.Key, key))
+            {
+                value = pair.Value;
+                return true;
+            }
+        }
+        value = default;
+        return false;
+        //throw new NotImplementedException();
+    }
+
+    private int GetBucketIndex(TKey key)
+    {
+        return
+            (EqualityComparer<TKey>.Default.GetHashCode(key)
+            & 0x7fffffff) % buckets.Length;
     }
 
     // Given. A line like "1 2 1 0 1 0 0": how many pairs sit in each bucket.
